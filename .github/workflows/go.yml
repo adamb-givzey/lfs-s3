@@ -35,6 +35,8 @@ jobs:
     - name: Create GitHub Release
       if: github.ref == 'refs/heads/master'
       uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ github.sha}}
         release_name: Release v${{ github.sha }}
@@ -44,6 +46,8 @@ jobs:
     - name: Upload Release Assets
       if: github.ref == 'refs/heads/master'
       uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create-release.outputs.upload_url }}
         asset_path: ./lfs-s3*
