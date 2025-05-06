@@ -34,6 +34,7 @@ jobs:
         path: lfs-s3*
     - name: Create GitHub Release
       if: github.ref == 'refs/heads/master'
+      id: create_release # Assign an ID to this step
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
