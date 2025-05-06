@@ -23,8 +23,6 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.22'
-    - name: Tidy mod
-      run: go mod tidy
     - name: Build
       run: go build -v
     - name: Archive build
@@ -32,3 +30,22 @@ jobs:
       with:
         name: ${{matrix.os}}_${{ github.sha }}_build
         path: lfs-s3*
+    - name: Create GitHub Release
+      if: github.ref == 'refs/heads/master'
+      uses: actions/create-release@v1
+      with:
+        tag_name: v${{ github.sha}}
+        release_name: Release v${{ github.sha }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Assets
+      if: github.ref == 'refs/heads/master'
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create-release.outputs.upload_url }}
+        asset_path: ./lfs-s3*
+        asset_name: lfs-s3-${{ matrix.os }}
+        asset_content_type: application/octet-stream
+
+    
