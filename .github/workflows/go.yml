@@ -32,27 +32,12 @@ jobs:
       with:
         name: ${{matrix.os}}_${{ github.sha }}_build
         path: lfs-s3*
-    - name: Create GitHub Release
-      if: github.ref == 'refs/heads/master'
-      id: create_release # Assign an ID to this step
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: GH Release
+      uses: softprops/action-gh-release@v2.2.2
       with:
         tag_name: v${{ github.sha}}
         release_name: Release v${{ github.sha }}
-        draft: false
-        prerelease: false
-
-    - name: Upload Release Assets
-      if: github.ref == 'refs/heads/master'
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: lfs-s3*
-        asset_name: lfs-s3-${{ matrix.os }}
-        asset_content_type: application/octet-stream
+        files: lfs-s3*
+      
 
     
