@@ -46,7 +46,7 @@ jobs:
       with:
         upload_url: ${{ release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: lfs-s3*
-        asset_name: $(( matrix.os }} release
+        asset_name: ${{ matrix.os }} release
         asset_content_type: application/zip
     # - name: GH Release
     #   uses: softprops/action-gh-release@v2.2.2
