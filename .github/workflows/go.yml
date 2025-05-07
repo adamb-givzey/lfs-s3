@@ -14,11 +14,14 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include:
           - os: ubuntu-latest
-            asset: lfs-s3-linux          # Linux binary
+            in_asset: lfs-s3
+            out_asset: lfs-s3-linux          # Linux binary
           - os: macos-latest
-            asset: lfs-s3-mac           # macOS binary
+            in_asset: lfs-s3
+            out_asset: lfs-s3-mac           # macOS binary
           - os: windows-latest
-            asset: lfs-s3-windows.exe        # Windows binary
+            in_asset: lfs-s3.exe
+            out_asset: lfs-s3-windows.exe        # Windows binary
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -36,6 +39,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ${{ matrix.asset }}
-        asset_name: ${{ matrix.asset }}
+        asset_path: ${{ matrix.in_asset }}
+        asset_name: ${{ matrix.out_asset }}
         asset_content_type: application/octet-stream
